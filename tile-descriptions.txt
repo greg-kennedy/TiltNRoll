@@ -1,0 +1,39 @@
+#  Meaning
+-- -------
+// nothing but tile images, or spawn points for models
+0  (nothing - decorative)
+1  (nothing - decorative)
+2  (nothing - decorative)
+3  (nothing - decorative)
+4  Icy
+5  Sticky
+6  Monster Spawn (Microchip)
+7  Monster Spawn (Dalek)
+8  Monster Spawn (Bulldozer Horizontal)
+9  Monster Spawn (Bulldozer Vertical)
+10 Smashable Crate
+11 * unused, was Pushable Crate *
+12 Switch - Red
+13 Switch - Yellow
+14 Switch - Blue
+15 Platform - Red
+16 Platform - Yellow
+17 Platform - Blue
+18 Elevator
+19 Key
+20 Locked Door
+
+// lights
+21 Teleporter
+22 Jump Pad
+23 Powerup (Spikes) 
+24 Powerup (Speed Boost)
+25 Powerup (Jump)
+26 Spawn Point
+27 Exit
+
+// static models
+28  Fan Horizontal
+29  Fan Vertical
+30  Bumper
+31  * unused, was Gate *

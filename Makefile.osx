@@ -1,0 +1,17 @@
+CXX = g++
+CXXFLAGS = -DUNIMOTION -O2 -Wall -fomit-frame-pointer -funroll-loops -arch i386 -arch ppc -I. -I/Users/ashres/Library/Frameworks/SDL.framework/Headers/ -I/Users/ashres/Library/Frameworks/SDL_image.framework/Headers/ -I/Users/ashres/Library/Frameworks/SDL_ttf.framework/Headers/ -I/Users/ashres/Library/Frameworks/SDL_mixer.framework/Headers/ -I/Users/ashres/System/Library/Frameworks/OpenGL.framework/Headers/
+LDFLAGS = -L./ -L/Users/ashres/sdl_root/usr/local/lib/ -arch i386 -F/Users/ashres/Library/Frameworks -framework Cocoa -framework OpenGL -framework SDL_image -framework SDL -framework SDL_mixer -framework SDL_ttf -framework IOKit -lSDLmain -lUniMotion
+SOURCES = main.cpp title.cpp game.cpp editor.cpp
+OBJECTS=$(SOURCES:.cpp=.o)
+NAME = tnr
+
+all: $(SOURCES) $(NAME)
+
+$(NAME): $(OBJECTS)
+	$(CXX) -o $@ $(OBJECTS) $(LDFLAGS)
+
+clean:
+	rm -f *.o $(NAME)
+
+.cpp.o:
+	$(CXX) -c $(CXXFLAGS) $< -o $@
