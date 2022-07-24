@@ -60,7 +60,7 @@ void title_drawLevelName(char *s)
 	SDL_FreeSurface(ts);
 
 	USETEX ( tex_title[7] );
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, ts2->w, ts2->h, 0, GL_RGB, GL_UNSIGNED_BYTE, ts2->pixels);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, ts2->w, ts2->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, ts2->pixels);
 	SDL_FreeSurface(ts2);
 }
 
@@ -95,14 +95,14 @@ void init_title()
      for (i = 0; i < 8; i++)
      {
          sprintf(buffer,"img/ui/title/%d.png",i);
-         ts = IMG_Load(buffer);
-         if (ts == NULL) { sprintf(ERRMSG,"init_title: Could not load %s",buffer); gamestate = -1; return; }
+         ts = loadImage(buffer);
+         if (ts == NULL) { gamestate = -1; return; }
          USETEX ( tex_title[i] );
 	     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, tex_quality);
 	     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, tex_quality);
 	     glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP );
          glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP );
-	     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, ts->w, ts->h, 0, GL_RGB, GL_UNSIGNED_BYTE, ts->pixels);
+	     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, ts->w, ts->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, ts->pixels);
 	     if (i < 7) SDL_FreeSurface(ts); else statusSurf = ts;
       }
       

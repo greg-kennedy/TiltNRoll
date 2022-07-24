@@ -1,7 +1,7 @@
 [Project]
 FileName=TiltNRoll.dev
 Name=TiltNRoll
-UnitCount=10
+UnitCount=9
 Type=0
 Ver=1
 ObjFiles=
@@ -12,7 +12,7 @@ ResourceIncludes=
 MakeIncludes=
 Compiler=-Dmain=SDL_main_@@_
 CppCompiler=-Wall_@@_
-Linker=-lmingw32 -lSDLmain -lSDL -lopengl32 -lSDL_ttf -lSDL_image -lSDL_mixer -lz_@@_
+Linker=-lmingw32 -lSDLmain -lSDL -lopengl32 -lSDL_ttf -lSDL_image -lSDL_mixer_@@_
 IsCpp=1
 Icon=TiltNRoll.ico
 ExeOutput=
@@ -28,16 +28,6 @@ IncludeVersionInfo=0
 SupportXPThemes=0
 CompilerSet=0
 CompilerSettings=0000000000010000000100
-
-[Unit1]
-FileName=main.cpp
-CompileCpp=1
-Folder=
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
 
 [VersionInfo]
 Major=0
@@ -56,6 +46,16 @@ OriginalFilename=
 ProductName=
 ProductVersion=
 AutoIncBuildNr=0
+
+[Unit1]
+FileName=main.cpp
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
 
 [Unit2]
 FileName=common.h
@@ -97,8 +97,8 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit7]
-FileName=editor.cpp
+[Unit6]
+FileName=title.cpp
 CompileCpp=1
 Folder=
 Compile=1
@@ -107,18 +107,8 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit10]
-FileName=unimotion.h
-CompileCpp=1
-Folder=TiltNRoll
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit6]
-FileName=title.cpp
+[Unit7]
+FileName=editor.cpp
 CompileCpp=1
 Folder=
 Compile=1
@@ -138,7 +128,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit9]
-FileName=unimotion.c
+FileName=unimotion.h
 CompileCpp=1
 Folder=TiltNRoll
 Compile=1

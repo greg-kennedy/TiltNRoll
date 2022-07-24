@@ -494,14 +494,14 @@ void load_tileset(int number)
      for (i=0; i<32; i++)
      {
          sprintf(tspath,"img/tiles/%d/%d.png",number,i);
-         ts = IMG_Load(tspath);
+         ts = loadImage(tspath);
          if (ts == NULL) { i = 32; } else {
      USETEX ( tileset[i] );
 	 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, tex_quality);
 	 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, tex_quality);
 	     glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP );
          glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP );
-	 glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, ts->w, ts->h, 0, GL_RGB, GL_UNSIGNED_BYTE, ts->pixels);
+	 glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, ts->w, ts->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, ts->pixels);
 	 SDL_FreeSurface(ts);
 	 maxtextures++;
          }
@@ -521,9 +521,9 @@ void init_editor()
          USETEX ( tex_editor[i] );
          if (i < 1) {
          sprintf(buffer,"img/ui/editor/%d.png",i);
-         ts = IMG_Load(buffer);
-         if (ts == NULL) { sprintf(ERRMSG,"init_editor: Could not load %s",buffer); gamestate = -1; return; }
-	     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, ts->w, ts->h, 0, GL_RGB, GL_UNSIGNED_BYTE, ts->pixels);
+         ts = loadImage(buffer);
+         if (ts == NULL) { gamestate = -1; return; }
+	     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, ts->w, ts->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, ts->pixels);
 	     SDL_FreeSurface(ts);
          }
 	     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, tex_quality);

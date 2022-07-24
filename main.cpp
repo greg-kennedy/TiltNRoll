@@ -47,6 +47,32 @@ char setname[80];
 
 int sms_type;
 
+SDL_Surface *loadImage(const char * filename)
+{
+	SDL_PixelFormat fmt =  {
+		.palette = NULL,
+		.BitsPerPixel = 32,
+		.BytesPerPixel = 4,
+		.Rloss = 0, .Gloss = 0, .Bloss = 0, .Aloss = 0,
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+		.Rshift = 24, .Gshift = 16, .Bshift = 8, .Ashift = 0,
+		.Rmask = 0xFF000000, .Gmask = 0x00FF0000, .Bmask = 0x0000FF00, .Amask = 0x000000FF,
+#else
+		.Rshift = 0, .Gshift = 8, .Bshift = 16, .Ashift = 24,
+		.Rmask = 0x000000FF, .Gmask = 0x0000FF00, .Bmask = 0x00FF0000, .Amask = 0xFF000000,
+#endif
+		.colorkey = 0,
+		.alpha = 255
+	};
+
+	SDL_Surface * temp = IMG_Load(filename);
+	if (temp == NULL) { sprintf(ERRMSG,"Failed to load %s", filename); return NULL; }
+	SDL_Surface * ret = SDL_ConvertSurface(temp, &fmt, 0);
+	if (ret == NULL) { sprintf(ERRMSG,"Failed to convert %s", filename); return ret; }
+	SDL_FreeSurface(temp);
+	return ret;
+}
+
 int main(int argc, char *argv[])
 {
 	int GLTexSize;
@@ -87,6 +113,7 @@ int main(int argc, char *argv[])
 	if (res == 1) { SCREEN_X = 640; SCREEN_Y = 480; }
 	else if (res == 2) {SCREEN_X = 800; SCREEN_Y = 600; }
 	else {SCREEN_X = 1024; SCREEN_Y = 768;}
+	fullscreen=0;
 	screen = SDL_SetVideoMode(SCREEN_X, SCREEN_Y, 0, SDL_OPENGL | (fullscreen==1?SDL_FULLSCREEN:0));
 //	screen = SDL_SetVideoMode(SCREEN_X, SCREEN_Y, 0, SDL_OPENGL | SDL_FULLSCREEN );
 	if(screen == NULL){
@@ -134,8 +161,8 @@ int main(int argc, char *argv[])
 	
 	SDL_ShowCursor( SDL_DISABLE );
 	glGenTextures(1, &cursor);
-	ts = IMG_Load("img/cursor.png");
-	if (ts == NULL) { sprintf(ERRMSG,"main: Could not load cursor.png"); SDL_ShowCursor(SDL_ENABLE); } else {
+	ts = loadImage("img/cursor.png");
+	if (ts == NULL) { fprintf(stderr, ERRMSG); SDL_ShowCursor(SDL_ENABLE); exit(3); } else {
 	USETEX ( cursor );
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, tex_quality);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, tex_quality);

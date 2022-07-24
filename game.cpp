@@ -1129,19 +1129,19 @@ void init_game()
      bigfont=TTF_OpenFont("Vera.ttf", 20);
 
      glGenTextures(1, &bgImage);
-     tsf = IMG_Load("img/starry.png");
-     if (tsf == NULL) { strcpy(ERRMSG,"init_game: Could not load img/starry.png"); gamestate = -1; return; }
+     tsf = loadImage("img/starry.png");
+     if (tsf == NULL) { gamestate = -1; return; }
      USETEX( bgImage );
 	 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, tex_quality);
 	 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, tex_quality);
 	 glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP );
      glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP );
-	 glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, tsf->w, tsf->h, 0, GL_RGB, GL_UNSIGNED_BYTE, tsf->pixels);
+	 glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tsf->w, tsf->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, tsf->pixels);
 	 SDL_FreeSurface(tsf);
      
      glGenTextures( 1, &hud );
-     hudsurf = IMG_Load("img/ui/game/hud.png");
-     if (hudsurf == NULL) { strcpy(ERRMSG,"init_game: Could not load img/ui/game/hud.png"); gamestate = -1; return; }
+     hudsurf = loadImage("img/ui/game/hud.png");
+     if (hudsurf == NULL) { gamestate = -1; return; }
      USETEX ( hud );
 	 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, tex_quality);
 	 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, tex_quality);
@@ -1158,14 +1158,14 @@ void init_game()
      for (i=0; i<32; i++)
      {
          sprintf(buffer,"img/tiles/%d/%d.png",levelset.tileset,i);
-         ts = IMG_Load(buffer);
-         if (ts == NULL) { fprintf(stderr,"Couldn't load %s\n",buffer); i = 32; } else {
+         ts = loadImage(buffer);
+         if (ts == NULL) { fprintf(stderr, ERRMSG); i = 32; } else {
      USETEX ( tile[i] );
 	 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, tex_quality);
 	 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, tex_quality);
 	     glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP );
          glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP );
-	 glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, ts->w, ts->h, 0, GL_RGB, GL_UNSIGNED_BYTE, ts->pixels);
+	 glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, ts->w, ts->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, ts->pixels);
 	 SDL_FreeSurface(ts);
          }
      }
@@ -1175,8 +1175,8 @@ void init_game()
      for (i=0; i<6; i++)
      {
          sprintf(buffer,"img/particle/%d.png",i);
-         ts = IMG_Load(buffer);
-         if (ts == NULL) { fprintf(stderr,"Couldn't load %s\n",buffer); i = 6; } else {
+         ts = loadImage(buffer);
+         if (ts == NULL) { fprintf(stderr,ERRMSG); i = 6; } else {
      USETEX ( partimgs[i] );
 	 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, tex_quality);
 	 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, tex_quality);
@@ -1193,8 +1193,8 @@ void init_game()
      for (i=0; i<2; i++)
      {
          sprintf(buffer,"img/boxtex/%d.png",i);
-         ts = IMG_Load(buffer);
-         if (ts == NULL) { fprintf(stderr,"Couldn't load %s\n",buffer); i = 2; } else {
+         ts = loadImage(buffer);
+         if (ts == NULL) { fprintf(stderr,ERRMSG); i = 2; } else {
      USETEX ( boxtex[i] );
 	 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, tex_quality);
 	 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, tex_quality);

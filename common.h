@@ -44,7 +44,7 @@
 
 #include <math.h>
 #include <time.h>
-#include <zlib.h>
+//#include <zlib.h>
 #include <dirent.h>
 
 #define NUM_SFX 19
@@ -79,5 +79,7 @@ struct s_levelset
        int tileset;
        s_level *top;
 };
+
+SDL_Surface *loadImage(const char * filename);
 
 #endif
