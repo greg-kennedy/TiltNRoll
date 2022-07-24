@@ -113,7 +113,6 @@ int main(int argc, char *argv[])
 	if (res == 1) { SCREEN_X = 640; SCREEN_Y = 480; }
 	else if (res == 2) {SCREEN_X = 800; SCREEN_Y = 600; }
 	else {SCREEN_X = 1024; SCREEN_Y = 768;}
-	fullscreen=0;
 	screen = SDL_SetVideoMode(SCREEN_X, SCREEN_Y, 0, SDL_OPENGL | (fullscreen==1?SDL_FULLSCREEN:0));
 //	screen = SDL_SetVideoMode(SCREEN_X, SCREEN_Y, 0, SDL_OPENGL | SDL_FULLSCREEN );
 	if(screen == NULL){

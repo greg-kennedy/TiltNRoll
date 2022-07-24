@@ -420,7 +420,7 @@ void drawbox()
       glTexCoord2f(0, 0);
       glVertex3f(.4375,.4375,.4375);
    glEnd();
-    glBegin(GL_QUADS);
+/*    glBegin(GL_QUADS);
       glTexCoord2f(0, 1);
       glVertex3f(-.4375,.4375,-.4375);
       glTexCoord2f(1, 1);
@@ -429,11 +429,11 @@ void drawbox()
       glVertex3f(.4375,-.4375,-.4375);
       glTexCoord2f(0, 0);
       glVertex3f(-.4375,-.4375,-.4375);
-   glEnd();
+   glEnd();*/
     glBegin(GL_QUAD_STRIP);
-      glTexCoord2f(0, 0);
-      glVertex3f(-.4375,.4375,-.4375);
       glTexCoord2f(1, 0);
+      glVertex3f(-.4375,.4375,-.4375);
+      glTexCoord2f(0, 0);
       glVertex3f(-.4375,.4375,.4375);
       glTexCoord2f(1, 1);
       glVertex3f(.4375,.4375,-.4375);
@@ -1796,7 +1796,7 @@ int simulate_game(void *)
 
 tobj2 = topobject;
      while (tobj2 != NULL)
-     { if (tobj2->type > 11 && tobj2->type < 15) { tobj2->x = (float)tobj2->startx + .5; tobj2->y = (float)tobj2->starty + .5; tobj2->z = (float)(level->tile[tobj2->startx][tobj2->starty] >> 5);} 
+     { if (tobj2->type > 11 && tobj2->type < 14) { tobj2->x = (float)tobj2->startx + .5; tobj2->y = (float)tobj2->starty + .5; tobj2->z = (float)(level->tile[tobj2->startx][tobj2->starty] >> 5);} 
      tobj2 = tobj2->next;}
          lives--;
     SDL_WarpMouse(SCREEN_X/2,SCREEN_Y/2);
@@ -1965,7 +1965,7 @@ tobj2 = topobject;
     SDL_WarpMouse(SCREEN_X/2,SCREEN_Y/2);
 tobj2 = topobject;
      while (tobj2 != NULL)
-     { if (tobj2->type > 11 && tobj2->type < 15) { tobj2->x = (float)tobj2->startx + .5; tobj2->y = (float)tobj2->starty + .5; tobj2->z = (float)(level->tile[tobj2->startx][tobj2->starty] >> 5);} 
+     { if (tobj2->type > 11 && tobj2->type < 14) { tobj2->x = (float)tobj2->startx + .5; tobj2->y = (float)tobj2->starty + .5; tobj2->z = (float)(level->tile[tobj2->startx][tobj2->starty] >> 5);} 
      tobj2 = tobj2->next;}
          needStatusUpdate = true;
 //            powerup = 0;
@@ -2037,7 +2037,7 @@ tobj2 = topobject;
     SDL_WarpMouse(SCREEN_X/2,SCREEN_Y/2);
 tobj2 = topobject;
      while (tobj2 != NULL)
-     { if (tobj2->type > 11 && tobj2->type < 15) { tobj2->x = (float)tobj2->startx + .5; tobj2->y = (float)tobj2->starty + .5; tobj2->z = (float)(level->tile[tobj2->startx][tobj2->starty] >> 5);} 
+     { if (tobj2->type > 11 && tobj2->type < 14) { tobj2->x = (float)tobj2->startx + .5; tobj2->y = (float)tobj2->starty + .5; tobj2->z = (float)(level->tile[tobj2->startx][tobj2->starty] >> 5);} 
      tobj2 = tobj2->next;}
          needStatusUpdate = true;
 //            powerup = 0;
@@ -2097,7 +2097,7 @@ tobj2 = topobject;
     SDL_WarpMouse(SCREEN_X/2,SCREEN_Y/2);
 tobj2 = topobject;
      while (tobj2 != NULL)
-     { if (tobj2->type > 11 && tobj2->type < 15) { tobj2->x = (float)tobj2->startx + .5; tobj2->y = (float)tobj2->starty + .5; tobj2->z = (float)(level->tile[tobj2->startx][tobj2->starty] >> 5);} 
+     { if (tobj2->type > 11 && tobj2->type < 14) { tobj2->x = (float)tobj2->startx + .5; tobj2->y = (float)tobj2->starty + .5; tobj2->z = (float)(level->tile[tobj2->startx][tobj2->starty] >> 5);} 
      tobj2 = tobj2->next;}
          needStatusUpdate = true;
 //            powerup = 0;
@@ -2163,7 +2163,7 @@ tobj2 = topobject;
                             {
                                tobj->reg = 0;
                                play_sound(1,tobj->x,tobj->y);
-                   createcloud(1,tobj->x, tobj->y, tobj->z,3,3,5,-gravity/2,6,25,0,1,3);
+                   createcloud(1,tobj->x, tobj->y, tobj->z,3,3,5,-gravity/10,6,25,0,0,1);
                             } else {
                                
                             if (ballpz + (ballvz*delta) > 1+(level->tile[(int)(ballpx-(delta*ballvx))][(int)(ballpy-(delta*ballvy))] >> 5)){
@@ -2344,29 +2344,30 @@ tobj2 = topobject;
          {
                 case 4:   // ice, no friction
                   break;
-                case 5: // glue, make sure 2x friction
-                  if (ballvx < delta) 
-                    ballvx += delta;
-                  else if (ballvx > delta)
-                    ballvx -= delta;
+                case 5: // glue, 4x friction
+                  if (ballvx < -4 * delta) 
+                    ballvx += 4 * delta;
+                  else if (ballvx > 4 * delta)
+                    ballvx -= 4 * delta;
                   else
                     ballvx = 0;
 
-                  if (ballvy < delta) 
-                    ballvy += delta;
-                  else if (ballvy > delta)
-                    ballvy -= delta;
+                  if (ballvy < -4 * delta) 
+                    ballvy += 4 * delta;
+                  else if (ballvy > 4 * delta)
+                    ballvy -= 4 * delta;
                   else
                     ballvy = 0;
+                  break;
                 default: // regular friction
-                  if (ballvx < delta) 
+                  if (ballvx < -delta) 
                     ballvx += delta;
                   else if (ballvx > delta)
                     ballvx -= delta;
                   else
                     ballvx = 0;
 
-                  if (ballvy < delta) 
+                  if (ballvy < -delta) 
                     ballvy += delta;
                   else if (ballvy > delta)
                     ballvy -= delta;
@@ -2379,7 +2380,7 @@ tobj2 = topobject;
      } else if (ballpz < -40) {
 tobj2 = topobject;
      while (tobj2 != NULL)
-     { if (tobj2->type > 11 && tobj2->type < 15) { tobj2->x = (float)tobj2->startx + .5; tobj2->y = (float)tobj2->starty + .5; tobj2->z = (float)(level->tile[tobj2->startx][tobj2->starty] >> 5);} 
+     { if (tobj2->type > 11 && tobj2->type < 14) { tobj2->x = (float)tobj2->startx + .5; tobj2->y = (float)tobj2->starty + .5; tobj2->z = (float)(level->tile[tobj2->startx][tobj2->starty] >> 5);} 
      tobj2 = tobj2->next;}
     SDL_WarpMouse(SCREEN_X/2,SCREEN_Y/2);
             lives--;

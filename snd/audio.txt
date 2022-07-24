@@ -1,2 +1,12 @@
 [title] nao - quartex_intro
 [editor] nao - microscopix 1.85
+
+game themes (also by nao):
+* chicken strut
+* gabbr astro
+* gabbr cut
+* glamour4u
+* jaques
+* naolytic adventurse
+* tipical
+* wondere wereld
