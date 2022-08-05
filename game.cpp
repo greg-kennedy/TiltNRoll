@@ -55,7 +55,7 @@ SDL_Surface *hudsurf;
 
 // ball position and all
 float ballpx, ballpy, ballpz, ballvx, ballvy, ballvz, ballax, ballay, ballaz;
-float ballrx, ballry;
+float ballr[16];
 float startx, starty;
 
 // level info
@@ -1101,10 +1101,13 @@ void init_level()
     ballpy = starty;
     ballpz = (float)(level->tile[(int)startx][(int)starty] >> 5)+1.0f;
     ballvx = ballvy = ballvz = ballax = ballay = ballaz = 0;
+    ballr[0] = ballr[5] = ballr[10] = ballr[15] = 1.0;
+    ballr[1] = ballr[2] = ballr[3] = ballr[4] = ballr[6] = ballr[7] = ballr[8] = ballr[9] = ballr[11] = ballr[12] = ballr[13] = ballr[14] = 0.0;
     createcloud(5,ballpx,ballpy,ballpz,0,0,-0.1,0,6,25,1,0,1);
 
 
     powerup = 0;
+    jumpok = spikeok = revok = 0;
     numkeys = 0;
      playing_fallsound = 0;
      leveldone = 0;
@@ -1438,10 +1441,9 @@ SDL_mutexP(lvlmutex);
 
     glPushMatrix();
     glTranslatef(ballpx,ballpy,ballpz );
-    glRotatef(ballry,0,1,0);
-    glRotatef(ballrx,1,0,0);
+    glMultMatrixf(ballr);
      USETEX(0);
-     if (spikeok > ticks + 500)
+     if (spikeok > ticks + 1500)
      {
         glCallList(spikeball);
      }
@@ -1535,15 +1537,15 @@ SDL_mutexV(objmutex);
     glTranslatef(ballpx,ballpy,ballpz );
     if (powerup == 1)
     {
-      glColor4f(1,1,0,.25);
+      glColor4f(1,1,0,.25 + (spikeok > ticks ? 0 : 0.25));
       glCallList(ballfx);
       glColor4f(1,1,1,1);
     } else if (powerup == 2) {
-      glColor4f(0,0,1,.25);
+      glColor4f(0,0,1,.25 + (revok > ticks ? 0 : 0.25));
       glCallList(ballfx);
       glColor4f(1,1,1,1);
     } else if (powerup == 3) {
-      glColor4f(1,0,0,.25);
+      glColor4f(1,0,0,.25 + (jumpok ? 0.25 : 0));
       glCallList(ballfx);
       glColor4f(1,1,1,1);
     }
@@ -1689,7 +1691,7 @@ bool handle_game()
                  my = event.motion.y * 600 / SCREEN_Y;
                  if (powerup == 3 && jumpok) { jumpok = 0; ballvz = 20; play_sound(7,ballpx,ballpy); }
                  else if (powerup == 2 && revok < ticks) { revok = ticks + 1000; ballvx *= 2; ballvy *= 2; play_sound(8,ballpx,ballpy); }
-                 else if (powerup == 1 && spikeok < ticks-1000) { spikeok = ticks + 1000; play_sound(9,ballpx,ballpy); }
+                 else if (powerup == 1 && spikeok < ticks) { spikeok = ticks + 2000; play_sound(9,ballpx,ballpy); }
                  break;
             case SDL_MOUSEMOTION:
                  usingkeys = 0;
@@ -1711,7 +1713,7 @@ bool handle_game()
                  else
                    if (powerup == 3 && jumpok) { jumpok = 0; ballvz = 20; play_sound(7,ballpx,ballpy); }
                  else if (powerup == 2 && revok < ticks) { revok = ticks + 1000; ballvx *= 2; ballvy *= 2; play_sound(8,ballpx,ballpy); }
-                 else if (powerup == 1 && spikeok < ticks-1000) { spikeok = ticks + 1000; play_sound(9,ballpx,ballpy); }
+                 else if (powerup == 1 && spikeok < ticks) { spikeok = ticks + 2000; play_sound(9,ballpx,ballpy); }
                    break;
             case SDL_KEYDOWN:
                  usingkeys = 1;
@@ -1750,7 +1752,7 @@ bool handle_game()
     if (fabs(z) > .5) {
           if (powerup == 3 && jumpok) { jumpok = 0; ballvz = 20; play_sound(7,ballpx,ballpy); }
           else if (powerup == 2 && revok < ticks) { revok = ticks + 1000; ballvx *= 2; ballvy *= 2; play_sound(8,ballpx,ballpy); }
-          else if (powerup == 1 && spikeok < ticks-1000) { spikeok = ticks + 1000; play_sound(9,ballpx,ballpy); }
+          else if (powerup == 1 && spikeok < ticks) { spikeok = ticks + 2000; play_sound(9,ballpx,ballpy); }
     }
     
     xrot = x * 15;
@@ -2125,6 +2127,7 @@ tobj2 = topobject;
 
      if (ballpx >= 0 && ballpx < 64 && ballpy >= 0 && ballpy < 64 && ballpz > .9) {
 
+	// wall bounces
      if (ballvx < 0 && ballpz + (ballvz*delta) + .5 < (level->tile[(int)(ballpx-(ballvx*delta)-.5)][(int)(ballpy-(delta*ballvy))] >> 5))
      {
                 ballvx = fabs(ballvx)/2;//+(10*delta);//.25;
@@ -2269,14 +2272,16 @@ tobj2 = topobject;
                    break;
          }
 
+	// allow jumping if ball is close enough to the ground
+     if (ballpz + (ballvz*delta) <= 1.0+(level->tile[(int)(ballpx-(delta*ballvx))][(int)(ballpy-(delta*ballvy))] >> 5)) jumpok = 1;
+
      if (ballpz + (ballvz*delta) <= .5+(level->tile[(int)(ballpx-(delta*ballvx))][(int)(ballpy-(delta*ballvy))] >> 5))
      {
          // ball hit ground - what now?
          ballpz = .5+(level->tile[(int)(ballpx-(delta*ballvx))][(int)(ballpy-(delta*ballvy))] >> 5);
-         if (spikeok > ticks + 500) {ballvz = 0; ballvx = 0; ballvy = 0; } else 
+         if (spikeok > ticks + 1500) {ballvz = 0; ballvx = 0; ballvy = 0; } else 
          if (ballvz < -(2*delta*gravity)) { ballvz = fabs(ballvz/2); play_sound(3,ballpx,ballpy, (int)min(128,(int)20*ballvz)); }else
          ballvz = 0;
-         jumpok = 1;
 
          int tiletype = level->tile[(int)(ballpx-(delta*ballvx))][(int)(ballpy-(delta*ballvy))] & 0x1F;
          switch (tiletype)
@@ -2408,9 +2413,55 @@ tobj2 = topobject;
      ballpx += ballvx*delta;
      ballpy += ballvy*delta;
      ballpz += ballvz*delta;
-     
-     ballrx += 100*ballvx*delta;
-     ballry += 100*ballvy*delta;
+
+	// rotate ball.  ball rotation is found by multiplying the current rotation matrix
+	//  around an axis (right of ballpx, ballpy) by some multiple of delta (speed)
+	if (delta && (ballvx || ballvy)) {
+		// distance travelled
+		float d = sqrt(ballvx * ballvx + ballvy * ballvy);
+		// construct perpendicular axis to rotate about
+		float ux = ballvy / d;
+		float uy = -ballvx / d;
+		// build rotation matrix
+		float C = cos(d * 2 * delta); float S = sin(d * 2 * delta);
+		float rot[9] = {
+			C + (ux * ux * (1-C)),
+			ux * uy * (1-C),
+			uy * S,
+
+			uy * ux * (1 - C),
+			C + (uy * uy * (1-C)),
+			-ux * S,
+
+			-uy * S,
+			ux * S,
+			C
+		};
+		
+		// perform rotation
+		float newMat[16] =
+		{
+			rot[0] * ballr[0] + rot[3] * ballr[1] + rot[6] * ballr[2],
+			rot[1] * ballr[0] + rot[4] * ballr[1] + rot[7] * ballr[2],
+			rot[2] * ballr[0] + rot[5] * ballr[1] + rot[8] * ballr[2],
+			0,
+
+			rot[0] * ballr[4] + rot[3] * ballr[5] + rot[6] * ballr[6],
+			rot[1] * ballr[4] + rot[4] * ballr[5] + rot[7] * ballr[6],
+			rot[2] * ballr[4] + rot[5] * ballr[5] + rot[8] * ballr[6],
+			0,
+
+			rot[0] * ballr[8] + rot[3] * ballr[9] + rot[6] * ballr[10],
+			rot[1] * ballr[8] + rot[4] * ballr[9] + rot[7] * ballr[10],
+			rot[2] * ballr[8] + rot[5] * ballr[9] + rot[8] * ballr[10],
+			0,
+
+			0, 0, 0, 1
+		};
+		
+		for (int i = 0; i < 16; i ++) ballr[i] = newMat[i];
+	}
+		
      } else {
        if (secsleft <= ticks)
         {
