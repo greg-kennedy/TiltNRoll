@@ -1,15 +1,20 @@
 TILT-N-ROLL
 GREG KENNEDY
-VERSION 1.1b
-Demo release for Intel 2007 Game Demo Contest
+VERSION 1.2
+Released August 4, 2022
 ===
 
 What's New
 
-Version 1.1b fixes some bugs from 1.0: pointer returns to center
-after death, monsters return to start upon dying, microchips can now fall to
-their death, and elevators (upward facing fans) now function correctly
-independent of CPU speed.
+Version 1.2 corrects several bugs with the previous release:
+* Ball rotation now matches its travel direction
+* Friction calculation on floors is now fixed
+* Bulldozers did not correctly respawn after death
+
+and adds some other gameplay changes:
+* Tweaks to power-ups and better indicators
+* Some Tough levels have time limits adjusted
+* Reduced file size of sounds and textures
 
 ===
 
@@ -41,7 +46,8 @@ Controls
 In-game:
 
 If you have a Mac laptop or an IBM ThinkPad, you can tilt your laptop to tilt
-the world.  This may require some special attention to computer settings: lookfor an HDAPS option on the Windows control panel to enable support for the
+the world.  This may require some special attention to computer settings: look
+for an HDAPS option on the Windows control panel to enable support for the
 sensors and to calibrate their sensitivity.
 Additionally Mac users can 'pop' the laptop up and down to activate powerups.
 Mac users should refer to README-osx.txt to get Unimotion support working.
@@ -80,7 +86,7 @@ Limitations of this release:
 Contact:
 
 You can reach me at kennedy.greg@gmail.com or view my webpage at
-http://nwserver.webhop.org
+https://greg-kennedy.com
 
 ===
 
