@@ -15,6 +15,7 @@ and adds some other gameplay changes:
 * Tweaks to power-ups and better indicators
 * Some Tough levels have time limits adjusted
 * Reduced file size of sounds and textures
+* ... plus an easter egg :)
 
 ===
 

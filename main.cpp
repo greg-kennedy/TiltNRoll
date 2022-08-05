@@ -38,6 +38,7 @@ unsigned long ticks;
 int sfxon, res, flipxy, fullscreen;
 GLuint tex_quality;
 int SCREEN_X, SCREEN_Y;
+int teapot;
 
 #ifdef THREADED
 SDL_mutex *lvlmutex, *objmutex, *partmutex;
@@ -92,11 +93,12 @@ int main(int argc, char *argv[])
     tex_quality = GL_LINEAR;
     fullscreen = 1;
     flipxy = 0;
+    teapot = 0;
     
     fp = fopen("tnr.ini", "r");
     if (fp != NULL)
     {
-           fscanf(fp,"%d\n%d\n%u\n%d\n%d\n",&sfxon,&res,&tex_quality,&fullscreen,&flipxy);
+           fscanf(fp,"%d\n%d\n%u\n%d\n%d\n%d\n",&sfxon,&res,&tex_quality,&fullscreen,&flipxy,&teapot);
            fclose(fp);
     }
 
@@ -256,7 +258,7 @@ if ( glthread == NULL ) {
     fp = fopen("tnr.ini", "w");
     if (fp != NULL)
     {
-           fprintf(fp,"%d\n%d\n%u\n%d\n%d\n",sfxon,res,tex_quality,fullscreen,flipxy);
+           fprintf(fp,"%d\n%d\n%u\n%d\n%d\n%d\n",sfxon,res,tex_quality,fullscreen,flipxy,teapot);
            fclose(fp);
     }
 

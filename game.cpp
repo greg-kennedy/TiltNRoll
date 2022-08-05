@@ -19,12 +19,15 @@
 /* game.cpp */
 #include "game.h"
 
+#include "teapot.h"
+
 // so first up, all those externs
 extern int gamestate;
 extern char ERRMSG[80], setname[80];
 extern GLuint last_used_tex, cursor;
 extern int mx, my;
 extern int sfxon;
+extern int teapot;
 extern GLuint tex_quality;
 extern int SCREEN_X, SCREEN_Y;
 extern unsigned long ticks;
@@ -1230,13 +1233,12 @@ void init_game()
 // create the ball
      ballmodel = glGenLists(1);
      glNewList(ballmodel,GL_COMPILE);
-//     fghTeapot (7, .5, GL_FILL);
-     drawsphere(2,.5,1);
+     if (teapot) fghTeapot (7, .5, GL_FILL);
+     else drawsphere(2,.5,1);
      glEndList();
 
      spikeball = glGenLists(1);
      glNewList(spikeball,GL_COMPILE);
-//     fghTeapot (7, .5, GL_FILL);
      drawspikeball();
      glEndList();
 
